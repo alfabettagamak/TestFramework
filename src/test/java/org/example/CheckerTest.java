@@ -42,4 +42,39 @@ class CheckerTest {
         assertTrue(checker.isCorrectLength("123"));
     }
 
+    @Test
+    void  checkIsZeroDivisionPositiveTesting() {
+        Checker checker = new Checker();
+        assertTrue(checker.isZeroDivision("0"));
+    }
+
+    @Test
+    void  checkIsZeroDivisionNegativeTesting() {
+        Checker checker = new Checker();
+        assertFalse(checker.isZeroDivision("1"));
+    }
+
+    @Test
+    void checkIsOneOfPositiveTesting() {
+        Checker checker = new Checker();
+        assertTrue(checker.isOneOf("+"));
+    }
+
+    @Test
+    void checkIsOneOfNegativeTesting() {
+        Checker checker = new Checker();
+        assertFalse(checker.isOneOf("%"));
+    }
+
+    @Test
+    void CheckIsDivisionPositiveTesting() {
+        Checker checker = new Checker();
+        assertTrue(checker.isDivision("/"));
+    }
+
+    @Test
+    void CheckIsDivisionNegativeTesting() {
+        Checker checker = new Checker();
+        assertFalse(checker.isDivision("*"));
+    }
 }

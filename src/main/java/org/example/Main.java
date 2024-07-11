@@ -24,22 +24,58 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException, SAXException {
-        String path = "/Users/alisa_school/java_lessons/TestFramework/TestFramework/src/main/resources/garage.xml";
-        Garage garage1 = new Garage(path);
-        NodeList nodes = garage1.document.getElementsByTagName("cars").item(0).getChildNodes();
+        Checker checker = new Checker();
+        checker.InputFirstNumber();
+        checker.InputAction();
+        checker.InputSecondNumber();
 
-        for (int i = 0; i < nodes.getLength(); i++) {
-            if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                HashMap hashMap = new HashMap<>();
-                hashMap.put("name", nodes.item(i).getNodeName());
-                for (int j = 0; j < nodes.item(i).getAttributes().getLength(); j++) {
-                    String key = nodes.item(i).getAttributes().item(j).getNodeName();
-                    String value = nodes.item(i).getAttributes().item(j).getNodeValue();
-                    hashMap.put(key, value);
-                }
-                garage1.garage.add(hashMap);
-            }
-            var a = 5;
-        }
+        Calculator calculator = new Calculator();
+        String result = calculator.ActionApplier(checker.FirstNumber, checker.Action, checker.secondNumber);
+        System.out.println(result);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        String path = "/Users/alisa_school/java_lessons/TestFramework/TestFramework/src/main/resources/garage.xml";
+//        Garage garage1 = new Garage(path);
+//        NodeList nodes = garage1.document.getElementsByTagName("cars").item(0).getChildNodes();
+//
+//        for (int i = 0; i < nodes.getLength(); i++) {
+//            if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+//                HashMap hashMap = new HashMap<>();
+//                hashMap.put("name", nodes.item(i).getNodeName());
+//                for (int j = 0; j < nodes.item(i).getAttributes().getLength(); j++) {
+//                    String key = nodes.item(i).getAttributes().item(j).getNodeName();
+//                    String value = nodes.item(i).getAttributes().item(j).getNodeValue();
+//                    hashMap.put(key, value);
+//                }
+//                garage1.garage.add(hashMap);
+//            }
+//            var a = 5;
+//        }
     }
 }
