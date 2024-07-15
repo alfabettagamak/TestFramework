@@ -1,0 +1,77 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "count": {"type": "integer"},
+    "next" : {"type" :  ["string", "null"]},
+    "previous" : {"type" :  ["string", "null"]},
+    "results": {
+      "type": "array",
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rotation_period": {
+            "type": "string"
+          },
+          "orbital_period": {
+            "type": "string"
+          },
+          "diameter": {
+            "type": "string"
+          },
+          "climate": {
+            "type": "string"
+          },
+          "gravity": {
+            "type": "string"
+          },
+          "terrain": {
+            "type": "string"
+          },
+          "surface_water": {
+            "type": "string"
+          },
+          "population": {
+            "type": "string",
+            "minLength": 1
+          },
+          "residents": {
+            "type": "array"
+          },
+          "films": {
+            "type": "array"
+          },
+          "created": {
+            "type": "string"
+          },
+          "edited": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "rotation_period",
+          "orbital_period",
+          "diameter",
+          "climate",
+          "gravity",
+          "terrain",
+          "surface_water",
+          "population",
+          "residents",
+          "films",
+          "created",
+          "edited",
+          "url"
+        ]
+      }
+    }
+  },
+  "required": [ "count", "next", "previous", "results"]
+}
