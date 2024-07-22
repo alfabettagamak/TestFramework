@@ -38,7 +38,8 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
 // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-safari-driver
     implementation 'org.seleniumhq.selenium:selenium-safari-driver:4.23.0'
-
+// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
 
 }
 
