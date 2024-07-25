@@ -6,14 +6,18 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class DashboardPage {
+public class DashboardPage extends BasePage {
 
 
-    private WebDriver driver;
     String url = "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index";
 
     public DashboardPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+    }
+
+    public DashboardPage open(){
+        driver.get(url);
+        return this;
     }
 
     public List<WebElement> getDashboardsElements(){
