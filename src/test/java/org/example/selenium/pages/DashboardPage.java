@@ -3,7 +3,9 @@ package org.example.selenium.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class DashboardPage extends BasePage {
@@ -16,7 +18,7 @@ public class DashboardPage extends BasePage {
     }
 
     public DashboardPage open(){
-        driver.get(url);
+        driver = super.open(url);
         return this;
     }
 

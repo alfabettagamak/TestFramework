@@ -26,4 +26,7 @@ public class MainMenu {
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[4]" )
     public WebElement time;
 
+    @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[9]" )
+    public WebElement directory;
+
 }
