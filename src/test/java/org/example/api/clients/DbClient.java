@@ -8,7 +8,7 @@ public class DbClient {
 
     static {
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ololo", "postgres", "12345");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "admin");
         } catch (SQLException e) {
             e.printStackTrace();
         }

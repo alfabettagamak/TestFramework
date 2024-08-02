@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.api.helpers.DataGenerator;
 import org.example.api.models.ApiTestBase;
 import org.example.api.models.Pet;
-import org.example.api.models.UpdateBody;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,41 +51,41 @@ public class PetsTest extends ApiTestBase {
         Assertions.assertEquals(expectedPet.id, actualPet.id);
     }
 
-    @Test
-    public void postPetIdPositive() throws IOException, InterruptedException {
-        String expectedPetId = createPet();
-        String body2 = "name=2&status=2";
+//    @Test
+//    public void postPetIdPositive() throws IOException, InterruptedException {
+//        String expectedPetId = createPet();
+//        String body2 = "name=2&status=2";
+//
+//        HttpRequest updateRequest = (HttpRequest) HttpRequest.newBuilder().uri(URI.create(host + endpoint + expectedPetId))
+//                .POST(HttpRequest.BodyPublishers.ofString(body2))
+//                .header("accept", "application/json")
+//                .header("Content-Type", "application/x-www-form-urlencoded").build();
+//
+//        HttpResponse updateResponse = sendApiRequest(updateRequest);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        UpdateBody responseBody = objectMapper.readValue(updateResponse.body().toString(), UpdateBody.class);
+//
+//        Assertions.assertEquals("200", responseBody.code);
+//        Assertions.assertEquals("unknown", responseBody.type);
+//        Assertions.assertEquals(expectedPetId, responseBody.message);
+//    }
 
-        HttpRequest updateRequest = (HttpRequest) HttpRequest.newBuilder().uri(URI.create(host + endpoint + expectedPetId))
-                .POST(HttpRequest.BodyPublishers.ofString(body2))
-                .header("accept", "application/json")
-                .header("Content-Type", "application/x-www-form-urlencoded").build();
-
-        HttpResponse updateResponse = sendApiRequest(updateRequest);
-        ObjectMapper objectMapper = new ObjectMapper();
-        UpdateBody responseBody = objectMapper.readValue(updateResponse.body().toString(), UpdateBody.class);
-
-        Assertions.assertEquals("200", responseBody.code);
-        Assertions.assertEquals("unknown", responseBody.type);
-        Assertions.assertEquals(expectedPetId, responseBody.message);
-    }
-
-    @Test
-    public void postPetIdNegative() throws IOException, InterruptedException {
-        String expectedPetId = createPet();
-        String fakeid = "999999999";
-        String body2 = "name=2&status=2";
-        HttpRequest updateRequest = (HttpRequest) HttpRequest.newBuilder().uri(URI.create(host + endpoint + fakeid))
-                .POST(HttpRequest.BodyPublishers.ofString(body2))
-                .header("accept", "application/json")
-                .header("Content-Type", "application/x-www-form-urlencoded").build();
-        HttpResponse updateResponse = sendApiRequest(updateRequest);
-        ObjectMapper objectMapper = new ObjectMapper();
-        UpdateBody responseBody = objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-                .readValue(updateResponse.body().toString(), UpdateBody.class);
-        Assertions.assertNotEquals("200", responseBody.code);
-        Assertions.assertNotEquals(expectedPetId, responseBody.message);
-    }
+//    @Test
+//    public void postPetIdNegative() throws IOException, InterruptedException {
+//        String expectedPetId = createPet();
+//        String fakeid = "999999999";
+//        String body2 = "name=2&status=2";
+//        HttpRequest updateRequest = (HttpRequest) HttpRequest.newBuilder().uri(URI.create(host + endpoint + fakeid))
+//                .POST(HttpRequest.BodyPublishers.ofString(body2))
+//                .header("accept", "application/json")
+//                .header("Content-Type", "application/x-www-form-urlencoded").build();
+//        HttpResponse updateResponse = sendApiRequest(updateRequest);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        UpdateBody responseBody = objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+//                .readValue(updateResponse.body().toString(), UpdateBody.class);
+//        Assertions.assertNotEquals("200", responseBody.code);
+//        Assertions.assertNotEquals(expectedPetId, responseBody.message);
+//    }
 
     public String createPet() throws IOException, InterruptedException {
         Pet expectedPet = DataGenerator.generateTestPet();

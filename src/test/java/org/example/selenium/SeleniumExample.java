@@ -2,8 +2,10 @@ package org.example.selenium;
 
 import org.example.selenium.helpers.FileHelper;
 import org.example.selenium.pages.DashboardPage;
+import org.example.selenium.pages.DirectoryPage;
 import org.example.selenium.pages.LoginPage;
 import org.example.selenium.pages.MainMenu;
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +70,62 @@ public class SeleniumExample extends TestBase {
         element1.click();
         Thread.sleep(60000);
     }
+
+    @Test
+    public void checkLogout() throws InterruptedException {
+        DashboardPage page = new DashboardPage(driver);
+        page.open().getMenu().directory.click();
+        driver.navigate().refresh();
+        WebElement element = driver.findElement(By.xpath(
+                "//div[contains(@class, 'context')]//h5[contains(@class, 'table')]"));
+        WebElement dropdown = driver.findElement(By.xpath(
+                "//div[contains(@class, 'header')]//span[contains(@class, 'userdropdown')]" +
+                        "//i[contains(@class, 'userdropdown')]"));
+        dropdown.click();
+        WebElement logout = driver.findElement(By.xpath(
+                "//ul[contains(@class, 'dropdown')]//*[text()='Logout']"));
+        logout.click();
+        WebElement loginTitle = driver.findElement(By.xpath(
+                "//div[contains(@class, 'login')]//h5[contains(@class, 'login')]"));
+        Assert.assertTrue(loginTitle.isDisplayed());
+    }
+
+    @Test
+    public void checkLogout2() throws InterruptedException {
+        DashboardPage page = new DashboardPage(driver);
+        page.open().getMenu().directory.click();
+        driver.navigate().refresh();
+        WebElement element = driver.findElement(By.xpath(
+                "//div[contains(@class, 'context')]//h5[contains(@class, 'table')]"));
+        WebElement loginTitle = page.getMenu().LogOut(driver);
+        Assert.assertTrue(loginTitle.isDisplayed());
+    }
+
+    @Test
+    public void checkSearchTesting() throws InterruptedException {
+        DirectoryPage page = new DirectoryPage(driver);
+        page.open();
+//        WebElement element = driver.findElement(By.xpath(
+//                "//*[text()=\"Job Title\"]//..//..//div[contains(@class, 'oxd-select-text--after')]"));
+//        element.click();
+//        List <WebElement> list = driver.findElements(By.xpath("//div[contains(@role, 'listbox')]//li"));
+//        var a=5;
+        WebElement result = driver.findElement(By.xpath(
+                "//div[contains(@class, 'orangehrm-corporate-directory')]//span[contains(@class, 'oxd-text oxd-text--span')]"));
+        String resultText = result.getText();
+        WebElement element = driver.findElement(By.xpath("//*[text()='-- Select --']"));
+        element.click();
+        WebElement element1 = driver.findElement(By.xpath("//*[@role='listbox']/div[5]"));
+        element1.click();
+        WebElement button = driver.findElement(By.xpath("//button[contains(@class, 'left')]"));
+        button.click();
+        WebElement newResult = driver.findElement(By.xpath(
+                "//div[contains(@class, 'orangehrm-corporate-directory')]//span[contains(@class, 'oxd-text oxd-text--span')]"));
+        String newResultText = newResult.getText();
+        Assert.assertNotEquals(resultText, newResultText);
+        Thread.sleep(6000);
+    }
+
 
     @Test
     public void checkScreenTesting() throws IOException, InterruptedException {
