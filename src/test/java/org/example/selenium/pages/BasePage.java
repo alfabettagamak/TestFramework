@@ -1,5 +1,6 @@
 package org.example.selenium.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -25,6 +26,7 @@ public class BasePage {
         return this.driver;
     }
 
+    @Step("Open page")
     public WebDriver open(String url){
         driver.get(url);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));

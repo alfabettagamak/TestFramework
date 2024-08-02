@@ -1,53 +1,41 @@
 package org.example.selenium;
 
+import io.qameta.allure.*;
 import org.example.selenium.helpers.FileHelper;
 import org.example.selenium.pages.DashboardPage;
 import org.example.selenium.pages.DirectoryPage;
 import org.example.selenium.pages.LoginPage;
-import org.example.selenium.pages.MainMenu;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.time.Duration;
 import java.util.List;
 
+import static io.qameta.allure.SeverityLevel.CRITICAL;
+
 public class SeleniumExample extends TestBase {
 
-    @Test
-    public void firstTesting() throws InterruptedException {
-        isNeedAuth = true;
-        LoginPage loginPage = new LoginPage(driver);
-        DashboardPage dashboard = loginPage
-                .open()
-                .authorization();
-        Assertions.assertEquals(2, dashboard.getDashboardsElements().size());
-//        WebElement img = driver.findElement(By.xpath("//img[@alt='company-branding']"));
-//        Assertions.assertTrue(img.isEnabled());
-    }
+    @RepeatedTest(1)
+    @DisplayName("Dashboard Page")
+    //@Description("This test attempts to log into the website using a login and a password. Fails if any error happens.\n\nNote that this test does not test 2-Factor Authentication.")
+    //@Severity(CRITICAL)
+    //@Owner("John Doe")
+//    @Link(name = "Website", url = "https://dev.example.com/")
+//    @Issue("AUTH-123")
+//    @TmsLink("TMS-456")
+    public void dashboardTesting() throws FileNotFoundException {
+        DashboardPage page = new DashboardPage(driver).open();
 
-    @Test
-    public void dashboardTesting(){
-        DashboardPage page = new DashboardPage(driver);
-        page.open();
         List<WebElement> list = driver.findElements(By.xpath(
                 "//*[text()=\"Quick Launch\"]/../../../div/div[" +
                         "@class=\"oxd-grid-3 orangehrm-quick-launch\"]/div"));
         List<WebElement> list1 = driver.findElements(By.xpath("//ul[@class='oxd-main-menu']/li"));
+        Allure.step("Asserts");
         Assertions.assertEquals(6, list.size());
         Assertions.assertEquals(12, list1.size());
     }
@@ -68,7 +56,6 @@ public class SeleniumExample extends TestBase {
         element.click();
         WebElement element1 = driver.findElement(By.xpath("//*[@role='listbox']/div[5]"));
         element1.click();
-        Thread.sleep(60000);
     }
 
     @Test
@@ -110,9 +97,9 @@ public class SeleniumExample extends TestBase {
 //        element.click();
 //        List <WebElement> list = driver.findElements(By.xpath("//div[contains(@role, 'listbox')]//li"));
 //        var a=5;
-        WebElement result = driver.findElement(By.xpath(
+        WebElement recordsFoundLabel = driver.findElement(By.xpath(
                 "//div[contains(@class, 'orangehrm-corporate-directory')]//span[contains(@class, 'oxd-text oxd-text--span')]"));
-        String resultText = result.getText();
+        String resultText = recordsFoundLabel.getText();
         WebElement element = driver.findElement(By.xpath("//*[text()='-- Select --']"));
         element.click();
         WebElement element1 = driver.findElement(By.xpath("//*[@role='listbox']/div[5]"));
@@ -123,17 +110,17 @@ public class SeleniumExample extends TestBase {
                 "//div[contains(@class, 'orangehrm-corporate-directory')]//span[contains(@class, 'oxd-text oxd-text--span')]"));
         String newResultText = newResult.getText();
         Assert.assertNotEquals(resultText, newResultText);
-        Thread.sleep(6000);
     }
 
 
     @Test
     public void checkScreenTesting() throws IOException, InterruptedException {
         new DashboardPage(driver).open();
-        Thread.sleep(6000);
 //        makeScreenshot("expected_dashboard_screen.png");
         File actualScreen = makeScreenshot("dashboard_screen.png");
         File fileExpected = new File(System.getProperty("user.dir") + "/src/test/resources/expected_dashboard_screen.png");
+        Allure.addAttachment("actual", new FileInputStream(actualScreen));
+        Allure.addAttachment("expected", new FileInputStream(fileExpected));
         Boolean result = FileHelper.isEqual(fileExpected, actualScreen);
         Assertions.assertTrue(result);
     }
@@ -153,9 +140,7 @@ public class SeleniumExample extends TestBase {
         driver.switchTo().alert().sendKeys("SOME TEXT");
         driver.switchTo().alert().accept();
         String text = (String) js.executeScript("return document.check");
-        Thread.sleep(6000);
         js.executeScript("document.body.innerHTML = '<h2>' + arguments[0] + '</h2>'", "TtttttTTTTTTGGHJ");
-        Thread.sleep(6000);
     }
 
     @ParameterizedTest

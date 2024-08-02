@@ -1,5 +1,7 @@
 package org.example.selenium.helpers;
 
+import io.qameta.allure.Step;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,6 +10,7 @@ import java.io.IOException;
 
 public class FileHelper {
 
+    @Step("Screen equal")
     public static Boolean isEqual(File expected, File actual) throws IOException {
 
         Boolean result = true;
