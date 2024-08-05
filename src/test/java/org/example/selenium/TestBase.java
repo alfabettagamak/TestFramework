@@ -1,53 +1,63 @@
 package org.example.selenium;
 
-import io.qameta.allure.Allure;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Step;
+import org.example.selenium.helpers.AfterTestExecution;
 import org.example.selenium.pages.LoginPage;
-import org.jetbrains.annotations.NotNull;
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Date;
+import java.util.HashMap;
 
-public class TestBase implements TestWatcher {
+@ExtendWith(AfterTestExecution.class)
+public class TestBase{
 
-    protected WebDriver driver;
-    public static Cookie authCookie;
-    TakesScreenshot takesScreenshot ;
-    JavascriptExecutor js;
+    private static String pathEnvFile = System.getProperty("user.dir") + "/src/test/resources/local_data.json";
 
-    @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
-        String fileNAme =  Long.toString(new Date().getTime());
-        makeScreenshot("screen_" + fileNAme +".png");
+    protected static WebDriver driver;
+
+    public static WebDriver getDriver() {
+        return driver;
     }
 
+    public static Cookie authCookie;
+    public static TakesScreenshot takesScreenshot ;
+    JavascriptExecutor js;
+
+
     @BeforeAll
-    public static void setupAll() throws MalformedURLException {
+    public static void setupAll() throws IOException {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
         WebDriver driverBefore;
-        if (System.getProperty("ENV_VAR") == "demo") {
-            driverBefore = new RemoteWebDriver(new URL("http://localhost:444"),options);
+        if ("demo" == "local") { // demo
+            options.addArguments("--headless=new");
+            options.setCapability("browserVersion", "127.0.6533.400-beta");
+            options.setCapability(CapabilityType.BROWSER_NAME, "chrome");
+            options.setCapability(CapabilityType.PLATFORM_NAME, "ANY");
+            options.setCapability("se:name", "ololo");
+            driverBefore = new RemoteWebDriver(new URL("http://172.17.0.2:4444/wd/hub"), options);
         }
-        else driverBefore = new ChromeDriver(options);
+        else if ("local".equals("local")) {
+            ObjectMapper mapper = new ObjectMapper();
+            HashMap settings = mapper.readValue(new File(pathEnvFile), HashMap.class);
+            if (settings.keySet().contains("headless")){
+                options.addArguments((String) settings.get("headless"));
+            }
+            driverBefore = new ChromeDriver(options);}
+        else driverBefore = new FirefoxDriver();
 
         //WebDriver
         driverBefore.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
@@ -63,7 +73,7 @@ public class TestBase implements TestWatcher {
     @Step("Prepare browser")
     public void setup(){
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
+        // options.addArguments("--headless=new");
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         driver.manage().window().maximize();
@@ -81,8 +91,8 @@ public class TestBase implements TestWatcher {
     }
 
     @Step("Make Screen")
-    public File makeScreenshot(String filePath){
-        String fileDir = System.getProperty("user.dir") + "/src/test/resources/" + filePath;
+    public static File makeScreenshot(String filePath){
+        String fileDir = System.getProperty("user.dir") + "/src/test/resources/screens/" + filePath;
         File file = new File(fileDir);
         takesScreenshot.getScreenshotAs(OutputType.FILE).renameTo(file);
         return file;

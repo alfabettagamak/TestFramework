@@ -4,7 +4,6 @@ import io.qameta.allure.*;
 import org.example.selenium.helpers.FileHelper;
 import org.example.selenium.pages.DashboardPage;
 import org.example.selenium.pages.DirectoryPage;
-import org.example.selenium.pages.LoginPage;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,12 +12,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 
 import java.io.*;
-import java.time.Duration;
 import java.util.List;
 
-import static io.qameta.allure.SeverityLevel.CRITICAL;
-
-public class SeleniumExample extends TestBase {
+public class OrangeHtmlTest extends TestBase {
 
     @RepeatedTest(1)
     @DisplayName("Dashboard Page")
@@ -28,9 +24,8 @@ public class SeleniumExample extends TestBase {
 //    @Link(name = "Website", url = "https://dev.example.com/")
 //    @Issue("AUTH-123")
 //    @TmsLink("TMS-456")
-    public void dashboardTesting() throws FileNotFoundException {
-        DashboardPage page = new DashboardPage(driver).open();
-
+    public void dashboardPageTesting() throws FileNotFoundException {
+        new DashboardPage(driver).open();
         List<WebElement> list = driver.findElements(By.xpath(
                 "//*[text()=\"Quick Launch\"]/../../../div/div[" +
                         "@class=\"oxd-grid-3 orangehrm-quick-launch\"]/div"));
@@ -42,26 +37,18 @@ public class SeleniumExample extends TestBase {
 
     @Test
     public void dashboardMenuTesting() throws InterruptedException {
-        DashboardPage page = new DashboardPage(driver);
-        page.open().getMenu().time.click();
-
+        DashboardPage dashboardPage = new DashboardPage(driver).open();
 //        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(2));
 //        wait.until(driver -> driver.findElement(By.xpath("//span[text()='Time']")));
-
-        driver.get(driver.getCurrentUrl());
-
-        page.getMenu().directory.click();
-        driver.navigate().refresh();
-        WebElement element = driver.findElement(By.xpath("//*[text()='-- Select --']"));
-        element.click();
-        WebElement element1 = driver.findElement(By.xpath("//*[@role='listbox']/div[5]"));
-        element1.click();
+        DirectoryPage directoryPage = dashboardPage.clickDirectoryMenu();
+        directoryPage.selectRandomJob();
+        Assertions.assertTrue(driver.findElement(By.xpath("//h6[text()='Directory']")).isDisplayed());
     }
 
     @Test
     public void checkLogout() throws InterruptedException {
         DashboardPage page = new DashboardPage(driver);
-        page.open().getMenu().directory.click();
+        page.open().getMenu().getDirectory().click();
         driver.navigate().refresh();
         WebElement element = driver.findElement(By.xpath(
                 "//div[contains(@class, 'context')]//h5[contains(@class, 'table')]"));
@@ -80,7 +67,7 @@ public class SeleniumExample extends TestBase {
     @Test
     public void checkLogout2() throws InterruptedException {
         DashboardPage page = new DashboardPage(driver);
-        page.open().getMenu().directory.click();
+        page.open().getMenu().getDirectory().click();
         driver.navigate().refresh();
         WebElement element = driver.findElement(By.xpath(
                 "//div[contains(@class, 'context')]//h5[contains(@class, 'table')]"));
@@ -153,6 +140,5 @@ public class SeleniumExample extends TestBase {
                 "return document.documentElement.scrollWidth==document.documentElement.clientWidth");
         Assertions.assertTrue(isScrollNonExist);
     }
-
 
 }

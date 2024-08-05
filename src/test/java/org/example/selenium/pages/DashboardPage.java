@@ -28,4 +28,11 @@ public class DashboardPage extends BasePage {
         return elements;
     }
 
+    public DirectoryPage clickDirectoryMenu() throws InterruptedException {
+        Thread.sleep(6000);
+        getMenu().getDirectory().click();
+        driver.navigate().refresh();
+        return new DirectoryPage(driver);
+    }
+
 }

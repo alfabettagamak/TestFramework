@@ -1,0 +1,11 @@
+{
+  "chrome": {
+    "headless": "--headless=new",
+    "wait_seconds": 4,
+    "browserVersion": "127.0.6533.400-beta"
+  },
+  "firefox": {
+    "headless": "--headless=new",
+    "wait_seconds": 4
+}
+}

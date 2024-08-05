@@ -1,0 +1,8 @@
+{
+  "chrome": {
+    "wait_seconds": 5
+  },
+  "firefox": {
+    "wait_seconds": 5
+}
+}

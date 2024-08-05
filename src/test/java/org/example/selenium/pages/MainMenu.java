@@ -31,18 +31,37 @@ public class MainMenu {
     }
 
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[1]" )
-    public WebElement admin;
+    private WebElement admin;
 
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[2]" )
-    public WebElement pim;
+    private WebElement pim;
 
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[3]" )
-    public WebElement leave;
+    private WebElement leave;
 
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[4]" )
-    public WebElement time;
+    private WebElement time;
 
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[9]" )
-    public WebElement directory;
+    private WebElement directory;
 
+    public WebElement getAdmin() {
+        return admin;
+    }
+
+    public WebElement getPim() {
+        return pim;
+    }
+
+    public WebElement getLeave() {
+        return leave;
+    }
+
+    public WebElement getTime() {
+        return time;
+    }
+
+    public WebElement getDirectory() {
+        return directory;
+    }
 }
