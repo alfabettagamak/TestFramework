@@ -23,25 +23,37 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException, SAXException {
+    static int some = 0;
 
+    public static void main(String[] args) {
 
-//        String path = "/Users/alisa_school/java_lessons/TestFramework/TestFramework/src/main/resources/garage.xml";
-//        Garage garage1 = new Garage(path);
-//        NodeList nodes = garage1.document.getElementsByTagName("cars").item(0).getChildNodes();
-//
-//        for (int i = 0; i < nodes.getLength(); i++) {
-//            if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
-//                HashMap hashMap = new HashMap<>();
-//                hashMap.put("name", nodes.item(i).getNodeName());
-//                for (int j = 0; j < nodes.item(i).getAttributes().getLength(); j++) {
-//                    String key = nodes.item(i).getAttributes().item(j).getNodeName();
-//                    String value = nodes.item(i).getAttributes().item(j).getNodeValue();
-//                    hashMap.put(key, value);
-//                }
-//                garage1.garage.add(hashMap);
-//            }
-//            var a = 5;
-//        }
+     Runnable action = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 1000; i++){
+                    //System.out.println("i= " + i);
+                    some = some + 1;
+                }
+                System.out.println("SOME " + some);
+            }
+        };
+
+        Runnable action2 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10000; i++){
+                    //System.out.println("i= " + (100 - i));
+                    some = some + 1;
+                }
+                System.out.println("SOME " + some);
+            }
+        };
+
+        Thread thread = new Thread(action);
+        thread.start();
+
+        Thread thread2 = new Thread(action2);
+        thread2.start();
+
     }
 }
