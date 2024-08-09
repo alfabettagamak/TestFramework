@@ -1,8 +1,10 @@
 {
   "chrome": {
+    "headless": true,
     "wait_seconds": 5
   },
   "firefox": {
-    "wait_seconds": 5
-}
+    "wait_seconds": 5,
+    "headless": true
+  }
 }

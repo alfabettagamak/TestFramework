@@ -4,9 +4,22 @@ plugins {
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
+def allureVersion = "2.29.0"
+
 
 repositories {
     mavenCentral()
+}
+
+// Define the version of AspectJ
+def aspectJVersion = '1.9.21'
+
+// Define configuration for AspectJ agent
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
 }
 
 dependencies {
@@ -42,10 +55,18 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
     // https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
-    // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
-    testImplementation 'io.qameta.allure:allure-junit5:2.28.1'
+// https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
+    testImplementation 'io.qameta.allure:allure-junit5:2.29.0'
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    // Add aspectjweaver dependency
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
 }
 
 test {
     useJUnitPlatform()
+    systemProperties["junit.jupiter.execution.parallel.enabled"] = true
+    systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
+    systemProperties["junit.jupiter.execution.parallel.mode.classes.default"]= "concurrent"
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2)
+    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
 }

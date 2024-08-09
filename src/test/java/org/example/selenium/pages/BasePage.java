@@ -18,6 +18,7 @@ public class BasePage {
         this.menu = new MainMenu(driver);
     }
 
+    @Step("Get main Menu")
     public MainMenu getMenu() {
         return menu;
     }
@@ -30,8 +31,9 @@ public class BasePage {
     public WebDriver open(String url){
         driver.get(url);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-        wait.until(
-                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+//        wait.until(
+//                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        wait.until(webDriver -> webDriver.findElement(By.xpath("//h6")).isDisplayed());
         return driver;
     }
 }

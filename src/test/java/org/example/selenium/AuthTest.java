@@ -2,15 +2,20 @@ package org.example.selenium;
 
 import org.example.selenium.pages.DashboardPage;
 import org.example.selenium.pages.LoginPage;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class AuthTest {
-    static WebDriver driver = new ChromeDriver();
+    static ChromeOptions options = new ChromeOptions();
+    static WebDriver driver;
+
+    @BeforeAll
+    public static void setup(){
+        options.addArguments("--headless=new");
+        driver = new ChromeDriver();
+    }
 
     @AfterAll
     public static void tearDown(){

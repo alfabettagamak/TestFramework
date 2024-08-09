@@ -3,6 +3,7 @@ package org.example.selenium;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Step;
 import org.example.selenium.helpers.AfterTestExecution;
+import org.example.selenium.helpers.FileHelper;
 import org.example.selenium.pages.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,12 +27,8 @@ import java.util.HashMap;
 public class TestBase{
 
     private static String pathEnvFile = System.getProperty("user.dir") + "/src/test/resources/local_data.json";
-
-    protected static WebDriver driver;
-
-    public static WebDriver getDriver() {
-        return driver;
-    }
+    private static ChromeOptions options = new ChromeOptions();
+    protected WebDriver driver;
 
     public static Cookie authCookie;
     public static TakesScreenshot takesScreenshot ;
@@ -40,11 +37,9 @@ public class TestBase{
 
     @BeforeAll
     public static void setupAll() throws IOException {
-        ChromeOptions options = new ChromeOptions();
         WebDriver driverBefore;
-        if ("demo" == "local") { // demo
-            options.addArguments("--headless=new");
-            options.setCapability("browserVersion", "127.0.6533.400-beta");
+        if ("demo".equals("local")) { // demo stand
+            options.setCapability(CapabilityType.BROWSER_VERSION, "127.0.6533.400-beta");
             options.setCapability(CapabilityType.BROWSER_NAME, "chrome");
             options.setCapability(CapabilityType.PLATFORM_NAME, "ANY");
             options.setCapability("se:name", "ololo");
@@ -52,17 +47,15 @@ public class TestBase{
         }
         else if ("local".equals("local")) {
             ObjectMapper mapper = new ObjectMapper();
-            HashMap settings = mapper.readValue(new File(pathEnvFile), HashMap.class);
-            if (settings.keySet().contains("headless")){
-                options.addArguments((String) settings.get("headless"));
+            HashMap settings = (HashMap) mapper.readValue(new File(pathEnvFile), HashMap.class).get("chrome");
+            if (!(boolean) settings.get("headless")){
+                options.addArguments("--headless=new");
             }
             driverBefore = new ChromeDriver(options);}
         else driverBefore = new FirefoxDriver();
 
         //WebDriver
         driverBefore.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
-        driverBefore.manage().window().maximize();
-
         LoginPage page = new LoginPage(driverBefore).open();
         page.authorization();
         authCookie = page.cookie;
@@ -72,8 +65,6 @@ public class TestBase{
     @BeforeEach
     @Step("Prepare browser")
     public void setup(){
-        ChromeOptions options = new ChromeOptions();
-        // options.addArguments("--headless=new");
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         driver.manage().window().maximize();
@@ -88,12 +79,12 @@ public class TestBase{
     @AfterEach
     public void tearDown(){
         driver.close();
+        driver.quit();
     }
 
     @Step("Make Screen")
-    public static File makeScreenshot(String filePath){
-        String fileDir = System.getProperty("user.dir") + "/src/test/resources/screens/" + filePath;
-        File file = new File(fileDir);
+    public static File makeScreenshot(String fileName){
+        File file = FileHelper.createScreenFile(fileName);
         takesScreenshot.getScreenshotAs(OutputType.FILE).renameTo(file);
         return file;
     }

@@ -10,26 +10,6 @@ public class MainMenu {
 
     WebDriver driver;
 
-    public MainMenu(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
-
-
-
-    public WebElement LogOut(WebDriver driver) {
-        WebElement dropdown = driver.findElement(By.xpath(
-                "//div[contains(@class, 'header')]//span[contains(@class, 'userdropdown')]" +
-                        "//i[contains(@class, 'userdropdown')]"));
-        dropdown.click();
-        WebElement logout = driver.findElement(By.xpath(
-                "//ul[contains(@class, 'dropdown')]//*[text()='Logout']"));
-        logout.click();
-        WebElement loginTitle = driver.findElement(By.xpath(
-                "//div[contains(@class, 'login')]//h5[contains(@class, 'login')]"));
-        return loginTitle;
-    }
-
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[1]" )
     private WebElement admin;
 
@@ -44,6 +24,12 @@ public class MainMenu {
 
     @FindBy(xpath = "//ul[@class='oxd-main-menu']/li[9]" )
     private WebElement directory;
+
+
+    public MainMenu(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
 
     public WebElement getAdmin() {
         return admin;
@@ -63,5 +49,22 @@ public class MainMenu {
 
     public WebElement getDirectory() {
         return directory;
+    }
+
+    public MainMenu clickDirectoryMenu() {
+        directory.click();
+        driver.navigate().refresh();
+        return this;
+    }
+
+    public LoginPage logout(){
+        WebElement dropdown = driver.findElement(By.xpath(
+                "//div[contains(@class, 'header')]//span[contains(@class, 'userdropdown')]" +
+                        "//i[contains(@class, 'userdropdown')]"));
+        dropdown.click();
+        WebElement logout = driver.findElement(By.xpath(
+                "//ul[contains(@class, 'dropdown')]//*[text()='Logout']"));
+        logout.click();
+        return new LoginPage(driver);
     }
 }

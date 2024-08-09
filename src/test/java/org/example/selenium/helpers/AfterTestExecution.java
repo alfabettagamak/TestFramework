@@ -16,8 +16,8 @@ public class AfterTestExecution implements AfterTestExecutionCallback {
     @Override
     public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
         if (extensionContext.getExecutionException().isPresent()) {
-            String fileNAme =  Long.toString(new Date().getTime());
-            File screen = TestBase.makeScreenshot("screen_" + fileNAme +".png");
+            String name =  Long.toString(new Date().getTime());
+            File screen = TestBase.makeScreenshot("screen_" + name +".png");
             Allure.addAttachment("fail screen", new FileInputStream(screen));
         }
     }

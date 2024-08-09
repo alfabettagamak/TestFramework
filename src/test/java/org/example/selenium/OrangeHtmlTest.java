@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import org.example.selenium.helpers.FileHelper;
 import org.example.selenium.pages.DashboardPage;
 import org.example.selenium.pages.DirectoryPage;
+import org.example.selenium.pages.LoginPage;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,26 +18,22 @@ import java.util.List;
 public class OrangeHtmlTest extends TestBase {
 
     @RepeatedTest(1)
-    @DisplayName("Dashboard Page")
+    @DisplayName("Dashboard Page Menu")
     //@Description("This test attempts to log into the website using a login and a password. Fails if any error happens.\n\nNote that this test does not test 2-Factor Authentication.")
     //@Severity(CRITICAL)
     //@Owner("John Doe")
 //    @Link(name = "Website", url = "https://dev.example.com/")
 //    @Issue("AUTH-123")
 //    @TmsLink("TMS-456")
-    public void dashboardPageTesting() throws FileNotFoundException {
+    public void dashboardMenuTesting() throws FileNotFoundException {
         new DashboardPage(driver).open();
-        List<WebElement> list = driver.findElements(By.xpath(
-                "//*[text()=\"Quick Launch\"]/../../../div/div[" +
-                        "@class=\"oxd-grid-3 orangehrm-quick-launch\"]/div"));
-        List<WebElement> list1 = driver.findElements(By.xpath("//ul[@class='oxd-main-menu']/li"));
+        List<WebElement> listMenu = driver.findElements(By.xpath("//ul[@class='oxd-main-menu']/li"));
         Allure.step("Asserts");
-        Assertions.assertEquals(6, list.size());
-        Assertions.assertEquals(12, list1.size());
+        Assertions.assertEquals(12, listMenu.size());
     }
 
     @Test
-    public void dashboardMenuTesting() throws InterruptedException {
+    public void clickMenuTesting() throws InterruptedException {
         DashboardPage dashboardPage = new DashboardPage(driver).open();
 //        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(2));
 //        wait.until(driver -> driver.findElement(By.xpath("//span[text()='Time']")));
@@ -47,18 +44,13 @@ public class OrangeHtmlTest extends TestBase {
 
     @Test
     public void checkLogout() throws InterruptedException {
-        DashboardPage page = new DashboardPage(driver);
-        page.open().getMenu().getDirectory().click();
-        driver.navigate().refresh();
-        WebElement element = driver.findElement(By.xpath(
-                "//div[contains(@class, 'context')]//h5[contains(@class, 'table')]"));
-        WebElement dropdown = driver.findElement(By.xpath(
-                "//div[contains(@class, 'header')]//span[contains(@class, 'userdropdown')]" +
-                        "//i[contains(@class, 'userdropdown')]"));
-        dropdown.click();
-        WebElement logout = driver.findElement(By.xpath(
-                "//ul[contains(@class, 'dropdown')]//*[text()='Logout']"));
-        logout.click();
+        DashboardPage dashboardPage = new DashboardPage(driver);
+        dashboardPage
+                .open()
+                .getMenu()
+                .clickDirectoryMenu()
+                .logout();
+
         WebElement loginTitle = driver.findElement(By.xpath(
                 "//div[contains(@class, 'login')]//h5[contains(@class, 'login')]"));
         Assert.assertTrue(loginTitle.isDisplayed());
@@ -66,13 +58,13 @@ public class OrangeHtmlTest extends TestBase {
 
     @Test
     public void checkLogout2() throws InterruptedException {
-        DashboardPage page = new DashboardPage(driver);
-        page.open().getMenu().getDirectory().click();
-        driver.navigate().refresh();
-        WebElement element = driver.findElement(By.xpath(
-                "//div[contains(@class, 'context')]//h5[contains(@class, 'table')]"));
-        WebElement loginTitle = page.getMenu().LogOut(driver);
-        Assert.assertTrue(loginTitle.isDisplayed());
+        LoginPage loginPage = new DashboardPage(driver)
+                .open()
+                .getMenu()
+                .clickDirectoryMenu()
+                .logout();
+
+        Assert.assertTrue(loginPage.getLoginTitle().isDisplayed());
     }
 
     @Test
@@ -101,11 +93,11 @@ public class OrangeHtmlTest extends TestBase {
 
 
     @Test
-    public void checkScreenTesting() throws IOException, InterruptedException {
+    public void screenTesting() throws IOException, InterruptedException {
         new DashboardPage(driver).open();
-//        makeScreenshot("expected_dashboard_screen.png");
+        //makeScreenshot("expected_dashboard_screen.png");
         File actualScreen = makeScreenshot("dashboard_screen.png");
-        File fileExpected = new File(System.getProperty("user.dir") + "/src/test/resources/expected_dashboard_screen.png");
+        File fileExpected = new File(System.getProperty("user.dir") + "/src/test/resources/screens/expected_dashboard_screen.png");
         Allure.addAttachment("actual", new FileInputStream(actualScreen));
         Allure.addAttachment("expected", new FileInputStream(fileExpected));
         Boolean result = FileHelper.isEqual(fileExpected, actualScreen);
@@ -119,14 +111,16 @@ public class OrangeHtmlTest extends TestBase {
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get("https://google.com");
         driver.switchTo().window(mainWindow);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("alert('!!!!!!!!!!!')");
-        Thread.sleep(1000);
+        // Thread.sleep(2000);
         driver.switchTo().alert().accept();
+        // Thread.sleep(2000);
         js.executeScript("document.check = prompt('!!!!!!!!!!!')");
-        driver.switchTo().alert().sendKeys("SOME TEXT");
+        String promptText = "SOME TEXT";
+        driver.switchTo().alert().sendKeys(promptText);
         driver.switchTo().alert().accept();
-        String text = (String) js.executeScript("return document.check");
+        String actualText = (String) js.executeScript("return document.check");
+        Assertions.assertEquals(promptText, actualText);
         js.executeScript("document.body.innerHTML = '<h2>' + arguments[0] + '</h2>'", "TtttttTTTTTTGGHJ");
     }
 
@@ -135,7 +129,6 @@ public class OrangeHtmlTest extends TestBase {
     public void windowsSizeTesting(int width, int height) throws InterruptedException {
         new DashboardPage(driver).open();
         driver.manage().window().setSize(new Dimension(width, height));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         Boolean isScrollNonExist = (Boolean) js.executeScript(
                 "return document.documentElement.scrollWidth==document.documentElement.clientWidth");
         Assertions.assertTrue(isScrollNonExist);

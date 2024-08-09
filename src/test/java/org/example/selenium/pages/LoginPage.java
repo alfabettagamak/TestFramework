@@ -31,4 +31,10 @@ public class LoginPage {
         cookie = driver.manage().getCookieNamed("orangehrm");
         return new DashboardPage(driver);
     }
+
+    public WebElement getLoginTitle(){
+        WebElement loginTitle = driver.findElement(By.xpath(
+                "//div[contains(@class, 'login')]//h5[contains(@class, 'login')]"));
+        return loginTitle;
+    }
 }

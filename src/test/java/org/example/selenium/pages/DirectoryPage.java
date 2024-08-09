@@ -28,16 +28,26 @@ public class DirectoryPage extends BasePage {
         return element;
     }
 
-    public DirectoryPage selectRandomJob() throws InterruptedException {
+    public DirectoryPage selectRandomJob() {
+        List<WebElement> elements = getJobs();
+        Random random = new Random();
+        int randElement = random.nextInt(elements.size());
+        return selectJob(randElement);
+    }
+
+    public List<WebElement> getJobs(){
         WebElement element = driver.findElement(By.xpath("//*[text()='-- Select --']"));
         element.click();
         List<WebElement> elements = driver.findElements(By.xpath("//*[@role='listbox']/div"));
-        Random random = new Random();
-        int randElement = random.nextInt(elements.size());
+        return elements;
+    }
+
+    public DirectoryPage selectJob(int number){
+        getJobs();
         new Actions(driver)
-                .scrollToElement(driver.findElement(By.xpath("//*[@role='listbox']/div["+ randElement + "]" )))
+                .scrollToElement(driver.findElement(By.xpath("//*[@role='listbox']/div["+ number + "]" )))
                 .perform();
-        driver.findElement(By.xpath("//*[@role='listbox']/div["+ randElement + "]")).click();
+        driver.findElement(By.xpath("//*[@role='listbox']/div["+ number + "]")).click();
         return this;
     }
 

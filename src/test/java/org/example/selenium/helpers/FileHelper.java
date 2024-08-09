@@ -10,6 +10,11 @@ import java.io.IOException;
 
 public class FileHelper {
 
+    public static File createScreenFile(String fileName){
+        String fileDir = System.getProperty("user.dir") + "/src/test/resources/screens/" + fileName;
+        return new File(fileDir);
+    }
+
     @Step("Screen equal")
     public static Boolean isEqual(File expected, File actual) throws IOException {
 
