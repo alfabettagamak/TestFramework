@@ -53,6 +53,7 @@ public class OrangeHtmlTest extends TestBase {
 
         WebElement loginTitle = driver.findElement(By.xpath(
                 "//div[contains(@class, 'login')]//h5[contains(@class, 'login')]"));
+        loginTitle.sendKeys(Keys.ENTER);
         Assert.assertTrue(loginTitle.isDisplayed());
     }
 
