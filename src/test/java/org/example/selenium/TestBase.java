@@ -40,6 +40,7 @@ public class TestBase{
         WebDriver driverBefore;
         String path_ch_driver = System.getProperty("user.dir");
         System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver");
+        System.out.println(System.getProperty("webdriver.chrome.driver"));
         if ("demo".equals("local")) { // demo stand
             options.setCapability(CapabilityType.BROWSER_VERSION, "127.0.6533.400-beta");
             options.setCapability(CapabilityType.BROWSER_NAME, "chrome");
