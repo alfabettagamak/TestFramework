@@ -54,7 +54,7 @@ dependencies {
 // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     implementation 'org.seleniumhq.selenium:selenium-java:4.23.0'
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver
-    //implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.23.0'
+    implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.23.0'
     // https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
 // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
