@@ -40,7 +40,7 @@ public class TestBase{
         WebDriver driverBefore;
         String path_ch_driver = System.getProperty("user.dir");
         System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-linux64/chromedriver");
-     //   System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-mac-arm64/chromedriver");
+        //System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-mac-arm64/chromedriver");
 
 
         //System.out.println(System.getProperty("webdriver.chrome.driver"));
@@ -59,6 +59,7 @@ public class TestBase{
             }
             //driverBefore = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
             driverBefore = new ChromeDriver(options);
+            options.addArguments("--headless=new");
             }
         else driverBefore = new FirefoxDriver();
 
