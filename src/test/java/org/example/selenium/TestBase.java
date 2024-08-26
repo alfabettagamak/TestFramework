@@ -39,7 +39,7 @@ public class TestBase{
     public static void setupAll() throws IOException {
         WebDriver driverBefore;
         String path_ch_driver = System.getProperty("user.dir");
-        //System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-linux64/chromedriver");
+        System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-linux64/chromedriver");
         //System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-mac-arm64/chromedriver");
         //System.out.println(System.getProperty("webdriver.chrome.driver"));
         if ("demo".equals("local")) { // demo stand
