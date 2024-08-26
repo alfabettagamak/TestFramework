@@ -57,6 +57,11 @@ public class TestBase{
             }
             options.addArguments("--remote-debugging-pipe");
             options.addArguments("--headless=new");
+            options.addArguments("enable-automation");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-extensions");
+            options.addArguments("--dns-prefetch-disable");
+            options.addArguments("--disable-gpu");
             driverBefore = new ChromeDriver(options);
             }
         else driverBefore = new FirefoxDriver();
