@@ -55,7 +55,7 @@ public class TestBase{
             if (!(boolean) settings.get("headless")){
                 options.addArguments("--headless=new");
             }
-//            options.addArguments("--remote-debugging-port=9222");
+            options.addArguments("--remote-debugging-port=9222");
 //            options.addArguments("--headless=new");
             options.addArguments("--start-maximized");
             options.addArguments("enable-automation");
