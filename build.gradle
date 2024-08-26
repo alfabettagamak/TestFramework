@@ -57,6 +57,9 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.23.0'
     // https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
+    // https://mvnrepository.com/artifact/io.appium/java-client
+    implementation 'io.appium:java-client:9.3.0'
+
 // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
     testImplementation 'io.qameta.allure:allure-junit5:2.29.0'
     testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
