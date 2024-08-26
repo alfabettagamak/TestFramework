@@ -55,8 +55,9 @@ public class TestBase{
             if (!(boolean) settings.get("headless")){
                 options.addArguments("--headless=new");
             }
-            driverBefore = new ChromeDriver(options);
+            options.addArguments("--remote-debugging-pipe");
             options.addArguments("--headless=new");
+            driverBefore = new ChromeDriver(options);
             }
         else driverBefore = new FirefoxDriver();
 
