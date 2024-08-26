@@ -20,6 +20,7 @@ public class MobileTest {
     // Node.js
     // npm
     // nmp install -g appium
+    // appium driver install uiautomator2
     // npm install wd (web driver)
     // android studio ANDROID_HOME
 
