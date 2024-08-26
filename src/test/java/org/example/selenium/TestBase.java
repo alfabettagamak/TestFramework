@@ -39,10 +39,8 @@ public class TestBase{
     public static void setupAll() throws IOException {
         WebDriver driverBefore;
         String path_ch_driver = System.getProperty("user.dir");
-        System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-linux64/chromedriver");
+        //System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-linux64/chromedriver");
         //System.setProperty("webdriver.chrome.driver", path_ch_driver + "/chromedriver-mac-arm64/chromedriver");
-
-
         //System.out.println(System.getProperty("webdriver.chrome.driver"));
         if ("demo".equals("local")) { // demo stand
             options.setCapability(CapabilityType.BROWSER_VERSION, "127.0.6533.400-beta");
@@ -57,7 +55,6 @@ public class TestBase{
             if (!(boolean) settings.get("headless")){
                 options.addArguments("--headless=new");
             }
-            //driverBefore = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
             driverBefore = new ChromeDriver(options);
             options.addArguments("--headless=new");
             }
