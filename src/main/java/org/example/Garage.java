@@ -2,6 +2,8 @@ package org.example;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -45,8 +47,23 @@ public class Garage {
         haval.put("model", "ZR");
         haval.put("year", "2022");
         haval.put("number", "H323XC23");
+
+        HashMap<String, String> haval2 = new HashMap<>();
+        haval2.put("name", "haval");
+        haval2.put("model", "HW");
+        haval2.put("year", "2018");
+        haval2.put("number", "H325XC55");
         garage.add(bmw);
         garage.add(haval);
+        garage.add(haval2);
+    }
+
+    public int getsize (){
+                return garage.size();
+    };
+
+    public HashMap get(int index){
+        return garage.get(index);
     }
 
     private Document getDocument() throws ParserConfigurationException {
@@ -83,4 +100,22 @@ public class Garage {
         transformer.transform(src, new StreamResult(outputStream));
         outputStream.close();
     }
+
+    public Garage addNodes (Garage garage, NodeList nodes) throws ParserConfigurationException, IOException, SAXException {
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+            if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                HashMap hashMap = new HashMap<>();
+                hashMap.put("name", nodes.item(i).getNodeName());
+                for (int j = 0; j < nodes.item(i).getAttributes().getLength(); j++) {
+                    String key = nodes.item(i).getAttributes().item(j).getNodeName();
+                    String value = nodes.item(i).getAttributes().item(j).getNodeValue();
+                    hashMap.put(key, value);
+                }
+                garage.garage.add(hashMap);
+            }
+        }
+        return garage;
+    }
+
 }

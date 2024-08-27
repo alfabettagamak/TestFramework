@@ -48,12 +48,21 @@ public class Main {
                 System.out.println("SOME " + some);
             }
         };
-
-        Thread thread = new Thread(action);
-        thread.start();
-
-        Thread thread2 = new Thread(action2);
-        thread2.start();
-
-    }
+//    public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException, SAXException {
+//        String path = "C:\\Users\\user\\IdeaProjects\\TestFramework2\\src\\main\\resources\\garage.xml";
+//        Garage garage1 = new Garage(path);
+//
+//        Thread thread = new Thread(action);
+//        thread.start();
+//
+//        Thread thread2 = new Thread(action2);
+//        thread2.start();
+//
+//        NodeList nodes = garage1.document.getElementsByTagName("cars").item(0).getChildNodes();
+//        NodeList nodes2 = garage1.document.getElementsByTagName("cars").item(1).getChildNodes();
+//        garage1.addNodes(garage1, nodes);
+//        garage1.addNodes(garage1, nodes2);
+//        System.out.println(garage1.toString());
+//        var a = 5;
+   }
 }
