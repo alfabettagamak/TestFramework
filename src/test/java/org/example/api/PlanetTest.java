@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.util.Set;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.*;
+import static org.hamcrest.Matchers.not;
 
 public class PlanetTest {
 
@@ -38,15 +39,12 @@ public class PlanetTest {
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6})
     public void getPlanetsTesting(int page) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "?page=" + page)).build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse response =  SendGetRequest(page);
 
         Assertions.assertEquals(200, response.statusCode());
-        String path = "/Users/alisa_school/java_lessons/TestFramework/TestFramework/src/test/resources/schema.json";
+        String path = "C:\\Users\\user\\IdeaProjects\\TestFramework2\\src\\test\\resources\\schema.json";
 
-        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
-        JsonSchema jsonSchema = factory.getSchema(Files.readString(Path.of(path)));
+        JsonSchema jsonSchema = GetJsonSchema(path);
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode jsonNode = mapper.readTree(response.body().toString());
@@ -81,5 +79,40 @@ public class PlanetTest {
         Request request1 = new Request.Builder().url(url).build();
         Response response = client1.newCall(request1).execute();
         var a = 5;
+    }
+
+    @Test
+    public void getPlanetsNegativeTesting() throws IOException, InterruptedException {
+        int page = 60;
+        HttpResponse response = SendGetRequest(page);
+        Assertions.assertEquals(404, response.statusCode());
+        String path = "C:\\Users\\user\\IdeaProjects\\TestFramework2\\src\\test\\resources\\schema.json";
+        JsonSchema jsonSchema = GetJsonSchema(path);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(response.body().toString());
+        Set<ValidationMessage> errors = jsonSchema.validate(jsonNode);
+        System.out.println(errors);
+        Assertions.assertFalse(errors.isEmpty());
+    }
+
+    @Test
+    public void getPlanetsRestAssuredNegativeTesting() {
+        RestAssured.get(baseUrl+"/1/")
+                .then()
+                .statusCode(200)
+                .body(not(matchesJsonSchemaInClasspath("schema.json")));
+    }
+
+    public HttpResponse SendGetRequest(int page) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "?page=" + page)).build();
+        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response;
+    }
+
+    public JsonSchema GetJsonSchema(String path) throws IOException {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        JsonSchema jsonSchema = factory.getSchema(Files.readString(Path.of(path)));
+        return jsonSchema;
     }
 }
