@@ -1,4 +1,4 @@
-package org.example.selenium;
+    package org.example.selenium;
 
 import io.qameta.allure.*;
 import org.example.selenium.helpers.FileHelper;
